@@ -1,16 +1,12 @@
-
 class Node:
     """
     A Node class to store integer data and a reference to the next node.
     """
 
     def __init__(self, data):
-        """
-        TODO:
-        - Assign the provided 'data' to an instance variable.
-        - Initialize 'next' to None.
-        """
-        pass
+        # assign the provided 'data' and initialize 'next' to None
+        self.data = data
+        self.next = None
 
 
 class LinkedList:
@@ -19,69 +15,79 @@ class LinkedList:
     """
 
     def __init__(self):
-        """
-        TODO:
-        - Initialize 'head' to None to represent an empty list.
-        """
-        pass
+        # initialize 'head' to None to represent an empty list
+        self.head = None
 
     def insert_at_front(self, data):
         """
-        TODO:
-        - Create a new Node with 'data'.
-        - Insert it at the front of the list (head).
-        - Update 'head' to the new node.
+        Create a new Node and insert it at the front of the list.
         """
-        pass
+        new_node = Node(data)
+        new_node.next = self.head
+        self.head = new_node
 
     def insert_at_end(self, data):
         """
-        (Optional) TODO:
-        - Create a new Node with 'data'.
-        - Traverse to the end of the list.
-        - Set the last node's 'next' reference to the new node.
+        Create a new Node and insert it at the end of the list.
         """
-        pass
+        new_node = Node(data)
+        if not self.head:
+            # if list is empty, new node becomes head
+            self.head = new_node
+            return
+        # otherwise, traverse to the end
+        current = self.head
+        while current.next:
+            current = current.next
+        current.next = new_node
 
     def recursive_sum(self):
         """
-        TODO:
-        - Use recursion to sum all node data in the list.
-        - Consider a helper function that:
-          1. Checks if the current node is None, and returns 0 if so.
-          2. Otherwise, returns node.data + recursive call on node.next.
-        - Return the total sum.
+        Return the sum of all node data using recursion.
         """
-        pass
+        def _sum(node):
+            if not node:
+                return 0
+            return node.data + _sum(node.next)
 
-    def recursive_reverse(self):
-        """
-        TODO:
-        - Reverse the list in-place using recursion.
-        - Possible approach:
-          1. Use a helper function that accepts 'prev' and 'current'.
-          2. Base case: if current is None, return 'prev' (new head).
-          3. Otherwise, swap pointers and recurse.
-        - Update 'head' to the returned new head.
-        """
-        pass
+        return _sum(self.head)
 
     def recursive_search(self, target):
         """
-        TODO:
-        - Return True if 'target' is found, otherwise False, using recursion.
-        - Consider a helper function that:
-          1. Returns False if the current node is None.
-          2. Returns True if current node's data == target.
-          3. Otherwise, recurse on the next node.
+        Return True if 'target' is found in the list; otherwise False.
         """
-        pass
+        def _search(node):
+            if not node:
+                return False
+            if node.data == target:
+                return True
+            return _search(node.next)
+
+        return _search(self.head)
+
+    def recursive_reverse(self):
+        """
+        Reverse the list in-place using recursion.
+        """
+        def _reverse(prev, curr):
+            # base case: end of list reached
+            if not curr:
+                return prev
+            next_node = curr.next
+            curr.next = prev
+            # recurse with curr as new prev and next_node as new curr
+            return _reverse(curr, next_node)
+
+        # update head to new head returned by helper
+        self.head = _reverse(None, self.head)
 
     def display(self):
         """
-        TODO:
-        - Print the contents of the list for debugging.
-        - Traverse from 'head' and collect each node's data.
-        - Format output as 'val -> val -> val -> None' or similar.
+        Print the contents of the list for debugging.
         """
-        pass
+        elems = []
+        current = self.head
+        while current:
+            elems.append(str(current.data))
+            current = current.next
+        print(" -> ".join(elems) + " -> None")
